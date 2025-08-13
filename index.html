@@ -130,10 +130,29 @@
         </div>
     </main>
 
-    <!-- Chatbot Floating Button -->
-    <button id="open-chat-modal" class="fixed bottom-6 right-6 bg-indigo-600 text-white rounded-full w-16 h-16 flex items-center justify-center shadow-lg hover:bg-indigo-700 transition transform hover:scale-110 z-50">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.834 8.834 0 01-4.28-1.115a.5.5 0 00-.64.644A9.834 9.834 0 0010 18c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.61a.5.5 0 00.707-.707A6.973 6.973 0 013 10c0-3.313 3.134-6 7-6s7 2.687 7 6zM10 5a1 1 0 011 1v1a1 1 0 11-2 0V6a1 1 0 011-1zm0 8a1 1 0 011-1h.01a1 1 0 110 2H11a1 1 0 01-1-1z" clip-rule="evenodd" /></svg>
-    </button>
+    <!-- Chat Widget -->
+    <div class="fixed bottom-6 right-6 flex flex-col items-end space-y-4 z-50">
+        <!-- Chat Window -->
+        <div id="chat-widget" class="w-80 md:w-96 h-[500px] bg-white rounded-lg shadow-xl flex-col transition-all duration-300 ease-in-out opacity-0 transform translate-y-4 pointer-events-none hidden">
+            <!-- Header -->
+            <div class="flex justify-between items-center p-3 border-b bg-indigo-600 text-white rounded-t-lg">
+                <h3 class="text-lg font-semibold">Asistente Virtual</h3>
+                <button id="close-chat-widget" class="text-white opacity-70 hover:opacity-100 text-2xl">&times;</button>
+            </div>
+            <!-- Messages -->
+            <div id="chat-messages" class="p-4 flex-1 overflow-y-auto space-y-4">
+                 <div class="flex justify-start"><div class="bg-gray-200 rounded-lg p-3 max-w-xs">Hola, soy tu asistente IA. ¿Cómo puedo ayudarte?</div></div>
+            </div>
+            <!-- Input -->
+            <div class="p-3 border-t bg-gray-50"><div class="flex space-x-2"><input id="chat-input" type="text" placeholder="Escribe tu mensaje..." class="flex-1 border rounded-lg p-2 focus:ring-indigo-500 focus:border-indigo-500"><button id="chat-send" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">Enviar</button></div></div>
+        </div>
+        
+        <!-- Floating Button -->
+        <button id="chat-toggle-btn" class="bg-indigo-600 text-white rounded-full w-16 h-16 flex items-center justify-center shadow-lg hover:bg-indigo-700 transition transform hover:scale-110">
+            <svg id="chat-icon-open" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+            <svg id="chat-icon-close" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+    </div>
     
     <!-- MODALS -->
     <!-- Add Task Modal -->
@@ -235,19 +254,6 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-    </div>
-    <!-- Chat Modal -->
-    <div id="chat-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50 opacity-0">
-        <div class="modal-content bg-white rounded-lg shadow-xl w-full max-w-md max-h-[90vh] overflow-hidden flex flex-col transform scale-95">
-            <div class="flex justify-between items-center p-4 border-b bg-indigo-600 text-white">
-                <h3 class="text-xl font-semibold">Asistente Virtual</h3>
-                <button class="close-modal-btn text-white opacity-70 hover:opacity-100 text-2xl leading-none">&times;</button>
-            </div>
-            <div id="chat-messages" class="p-6 flex-1 overflow-y-auto space-y-4">
-                <div class="flex justify-start"><div class="bg-gray-200 rounded-lg p-3 max-w-xs">Hola, soy tu asistente IA. ¿Cómo puedo ayudarte?</div></div>
-            </div>
-            <div class="p-4 border-t"><div class="flex space-x-2"><input id="chat-input" type="text" placeholder="Escribe tu mensaje..." class="flex-1 border rounded-lg p-2"><button id="chat-send" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">Enviar</button></div></div>
         </div>
     </div>
 
@@ -379,8 +385,7 @@
             addTask: document.getElementById('add-task-modal'),
             editTask: document.getElementById('edit-task-modal'),
             guests: document.getElementById('guests-modal'),
-            providers: document.getElementById('providers-modal'),
-            chat: document.getElementById('chat-modal')
+            providers: document.getElementById('providers-modal')
         };
 
         function toggleModal(modal, show) {
@@ -410,7 +415,6 @@
 
             document.getElementById('open-guests-modal').addEventListener('click', () => toggleModal(modals.guests, true));
             document.getElementById('open-providers-modal').addEventListener('click', () => toggleModal(modals.providers, true));
-            document.getElementById('open-chat-modal').addEventListener('click', () => toggleModal(modals.chat, true));
 
             document.querySelectorAll('.modal-overlay').forEach(overlay => {
                 overlay.addEventListener('click', e => {
@@ -454,7 +458,37 @@
             });
         }
 
-        function setupChat() {
+        function setupChatWidget() {
+            const toggleBtn = document.getElementById('chat-toggle-btn');
+            const chatWidget = document.getElementById('chat-widget');
+            const closeBtn = document.getElementById('close-chat-widget');
+            const iconOpen = document.getElementById('chat-icon-open');
+            const iconClose = document.getElementById('chat-icon-close');
+
+            const toggleChat = (forceOpen = null) => {
+                const isOpen = !chatWidget.classList.contains('hidden');
+                const open = forceOpen !== null ? forceOpen : !isOpen;
+
+                if (open) {
+                    chatWidget.classList.remove('hidden');
+                    setTimeout(() => {
+                        chatWidget.classList.remove('opacity-0', 'translate-y-4');
+                        chatWidget.classList.add('pointer-events-auto');
+                    }, 10);
+                    iconOpen.classList.add('hidden');
+                    iconClose.classList.remove('hidden');
+                } else {
+                    chatWidget.classList.add('opacity-0', 'translate-y-4');
+                    chatWidget.classList.remove('pointer-events-auto');
+                    setTimeout(() => chatWidget.classList.add('hidden'), 300);
+                    iconOpen.classList.remove('hidden');
+                    iconClose.classList.add('hidden');
+                }
+            }
+
+            toggleBtn.addEventListener('click', () => toggleChat());
+            closeBtn.addEventListener('click', () => toggleChat(false));
+
             const chatInput = document.getElementById('chat-input');
             const chatSend = document.getElementById('chat-send');
             const chatMessages = document.getElementById('chat-messages');
@@ -475,6 +509,7 @@
             chatSend.addEventListener('click', handleSend);
             chatInput.addEventListener('keypress', e => { if (e.key === 'Enter') handleSend(); });
         }
+
 
         function setupInvitations() {
             const qrBtn = document.getElementById('generate-qr-btn');
@@ -524,7 +559,7 @@
             
             setupKanbanBoard();
             setupModals();
-            setupChat();
+            setupChatWidget();
             setupInvitations();
             populateProvidersTable();
         }
